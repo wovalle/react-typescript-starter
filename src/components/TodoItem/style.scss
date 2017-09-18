@@ -1,0 +1,109 @@
+.todo-item {
+  $color_1: #cc9a9a;
+  $color_2: #af5b5e;
+  $color_3: #d9d9d9;
+
+  /*
+    Hack to remove background from Mobile Safari.
+    Can't use it globally since it destroys checkboxes in Firefox
+  */
+  .normal {
+    .toggle {
+      text-align: center;
+      width: 40px;
+      height: auto;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      border: none;
+
+      &:after {
+        content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="%23ededed" stroke-width="3"/></svg>');
+      }
+
+      &:checked {
+        &:after {
+          content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="%23bddad5" stroke-width="3"/><path fill="%235dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>');
+        }
+      }
+    }
+
+    label {
+      white-space: pre-line;
+      word-break: break-all;
+      padding: 15px 60px 15px 15px;
+      margin-left: 45px;
+      display: block;
+      line-height: 1.2;
+      transition: color 0.4s;
+    }
+
+    .destroy {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 10px;
+      bottom: 0;
+      width: 40px;
+      height: 40px;
+      margin: auto 0;
+      font-size: 30px;
+      color: $color_1;
+      margin-bottom: 11px;
+      transition: color 0.2s ease-out;
+      &:hover {
+        color: $color_2;
+      }
+      &:after {
+        content: '×';
+      }
+    }
+
+    &:hover {
+      .destroy {
+        display: block;
+      }
+    }
+
+    .edit {
+      display: none;
+    }
+  }
+
+  .editing {
+    border-bottom: none;
+    padding: 0;
+
+    &:last-child {
+      margin-bottom: -1px;
+    }
+
+    .edit {
+      display: block;
+      width: 506px;
+      padding: 13px 17px 12px 17px;
+      margin: 0 0 0 43px;
+    }
+
+    .view {
+      display: none;
+    }
+  }
+
+  .completed {
+    label {
+      color: $color_3;
+      text-decoration: line-through;
+    }
+  }
+
+  @media screen and (-webkit-min-device-pixel-ratio: 0){
+    .normal {
+      .toggle {
+        background: none;
+        height: 40px;
+      }
+    }
+  }
+}
