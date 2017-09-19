@@ -1,15 +1,33 @@
-import { createStore, applyMiddleware, Store } from 'redux';
+import { History } from 'history';
+import { createStoreParams } from './index';
+import { createStore, applyMiddleware, Store, compose } from 'redux';
 import { logger } from '../middleware';
+import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
+import thunk from 'redux-thunk';
+
+import * as services from '../services';
 import rootReducer, { RootState } from '../reducers';
 
-export function configureStore(initialState?: RootState): Store<RootState> {
-  const create = window.devToolsExtension
-    ? window.devToolsExtension()(createStore)
-    : createStore;
+const thunkWithServices = thunk.withExtraArgument(services);
 
-  const createStoreWithMiddleware = applyMiddleware(logger)(create);
+export interface createStoreParams {
+  history: History,
+  initialState?: RootState,
+}
 
-  const store = createStoreWithMiddleware(rootReducer, initialState) as Store<RootState>;
+function configureStoreDev(params: createStoreParams ): Store<RootState> {
+
+  const middlewares = [
+    reduxImmutableStateInvariant(),
+    thunkWithServices,
+  ];
+
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
+
+  const store = createStore(rootReducer, params.initialState, composeEnhancers(
+    applyMiddleware(...middlewares)
+    )
+  ) as Store<RootState>;
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {
@@ -20,3 +38,18 @@ export function configureStore(initialState?: RootState): Store<RootState> {
 
   return store;
 }
+
+function configureStoreProd(params: createStoreParams): Store<RootState> {
+  const middlewares = [
+    thunkWithServices,
+  ];
+
+  return createStore(rootReducer, params.initialState, compose(
+    applyMiddleware(...middlewares)
+    )
+  );
+}
+
+const configureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
+
+export default configureStore;

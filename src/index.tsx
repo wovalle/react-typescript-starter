@@ -3,14 +3,14 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { configureStore } from './store';
+import configureStore from './store';
 import { AppContainer } from 'react-hot-loader';
 import { Root } from './components/Root';
 
 import { Routes } from './components/Routes';
 
-const store = configureStore();
 const history = createBrowserHistory();
+const store = configureStore({ history });
 
 render(
   <AppContainer>
