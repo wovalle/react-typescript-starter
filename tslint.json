@@ -1,0 +1,13 @@
+{
+  "extends": ["tslint-config-airbnb", "tslint-react"],
+  "rules": {
+    "match-default-export-name": false,
+    "jsx-boolean-value": false,
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-pascal-case"
+    ],
+    "import-name": false
+  }
+}
