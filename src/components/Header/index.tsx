@@ -29,9 +29,10 @@ export class Header extends React.Component<Header.Props, Header.State> {
       <header>
         <h1>Todos</h1>
         <TodoTextInput
-          newTodo
+          newTodo={true}
           onSave={this.handleSave}
-          placeholder="What needs to be done?" />
+          placeholder="What needs to be done?"
+        />
       </header>
     );
   }

@@ -4,7 +4,7 @@ import * as Actions from '../constants/actions';
 const initialState: TodoStoreState = [{
   id: 0,
   text: 'Use Redux',
-  completed: false
+  completed: false,
 }];
 
 export default handleActions<TodoStoreState, TodoItemData>({
@@ -21,7 +21,7 @@ export default handleActions<TodoStoreState, TodoItemData>({
   },
 
   [Actions.EDIT_TODO]: (state, action) => {
-    return state.map(todo => {
+    return state.map((todo) => {
       return todo.id === action.payload.id
         ? { ...todo, text: action.payload.text }
         : todo;
@@ -29,7 +29,7 @@ export default handleActions<TodoStoreState, TodoItemData>({
   },
 
   [Actions.COMPLETE_TODO]: (state, action) => {
-    return state.map(todo => {
+    return state.map((todo) => {
       return todo.id === action.payload
         ? { ...todo, completed: !todo.completed }
         : todo;
@@ -38,15 +38,15 @@ export default handleActions<TodoStoreState, TodoItemData>({
 
   [Actions.COMPLETE_ALL]: (state, action) => {
     const areAllMarked = state.every(todo => todo.completed);
-    return state.map(todo => {
+    return state.map((todo) => {
       return {
         ...todo,
-        completed: !areAllMarked
+        completed: !areAllMarked,
       };
     });
   },
 
   [Actions.CLEAR_COMPLETED]: (state, action) => {
     return state.filter(todo => todo.completed === false);
-  }
+  },
 }, initialState);

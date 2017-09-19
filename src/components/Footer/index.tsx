@@ -6,7 +6,7 @@ import './style.scss';
 export const FILTER_TITLES = {
   [SHOW_ALL]: 'All',
   [SHOW_ACTIVE]: 'Active',
-  [SHOW_COMPLETED]: 'Completed'
+  [SHOW_COMPLETED]: 'Completed',
 };
 
 export namespace Footer {
@@ -38,10 +38,14 @@ export class Footer extends React.Component<Footer.Props, Footer.State> {
   renderFilterLink(filter: TodoFilterType) {
     const { filter: selectedFilter, onShow } = this.props;
 
+    const handleOnShow = (filter: TodoFilterType) => onShow(filter);
+
     return (
-      <a className={classNames({selected: filter === selectedFilter })}
+      <a
+        className={classNames({ selected: filter === selectedFilter })}
         style={{ cursor: 'pointer' }}
-        onClick={() => onShow(filter)}>
+        onClick={handleOnShow(filter)}
+      >
         {FILTER_TITLES[filter]}
       </a>
     );
@@ -59,15 +63,17 @@ export class Footer extends React.Component<Footer.Props, Footer.State> {
   }
 
   render() {
+    const filterTypes = FILTER_TYPES.map(filter => (
+      <li key={filter}>
+        {this.renderFilterLink(filter)}
+      </li>
+    ));
+
     return (
       <footer className="footer">
         {this.renderTodoCount()}
         <ul className="filters">
-          {FILTER_TYPES.map((filter) =>
-            <li key={filter}>
-              {this.renderFilterLink(filter)}
-            </li>
-          )}
+          {filterTypes}
         </ul>
         {this.renderClearButton()}
       </footer>

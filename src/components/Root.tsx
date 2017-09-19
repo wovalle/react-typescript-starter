@@ -10,11 +10,11 @@ import { History } from 'history';
 import { Routes } from './Routes';
 
 interface RootProps {
-  store: Store<RootState>,
-  history: History,
+  store: Store<RootState>;
+  history: History;
 }
 
-export const Root: React.SFC<RootProps> = (props) => (
+export const Root: React.SFC<RootProps> = props => (
   <Provider store={props.store}>
     <Router history={props.history}>
       <Routes />

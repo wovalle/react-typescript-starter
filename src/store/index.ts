@@ -11,23 +11,22 @@ import rootReducer, { RootState } from '../reducers';
 const thunkWithServices = thunk.withExtraArgument(services);
 
 export interface createStoreParams {
-  history: History,
-  initialState?: RootState,
+  history: History;
+  initialState?: RootState;
 }
 
-function configureStoreDev(params: createStoreParams ): Store<RootState> {
+function configureStoreDev(params: createStoreParams): Store<RootState> {
 
   const middlewares = [
     reduxImmutableStateInvariant(),
     thunkWithServices,
   ];
-
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
+  // add support for Redux dev tools
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
   const store = createStore(rootReducer, params.initialState, composeEnhancers(
-    applyMiddleware(...middlewares)
-    )
-  ) as Store<RootState>;
+    applyMiddleware(...middlewares),
+  )) as Store<RootState>;
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {
@@ -44,12 +43,12 @@ function configureStoreProd(params: createStoreParams): Store<RootState> {
     thunkWithServices,
   ];
 
-  return createStore(rootReducer, params.initialState, compose(
-    applyMiddleware(...middlewares)
-    )
+  return createStore(rootReducer, params.initialState,
+    compose(applyMiddleware(...middlewares)),
   );
 }
 
-const configureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
+const configureStore =
+  process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
 
 export default configureStore;

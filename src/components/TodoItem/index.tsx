@@ -22,7 +22,7 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
   constructor(props?: TodoItem.Props, context?: any) {
     super(props, context);
     this.state = {
-      editing: false
+      editing: false,
     };
     this.handleSave = this.handleSave.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
@@ -41,29 +41,40 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
     this.setState({ editing: false });
   }
 
+  handleInput(id: number) {
+    return (text: string) => this.handleSave(id, text);
+  }
+
   render() {
     const { todo, completeTodo, deleteTodo } = this.props;
+
+    const handleCompleteTodo = (id: number) => completeTodo(id);
+    const handleDeleteTodo = (id: number) => deleteTodo(id);
 
     let element;
     if (this.state.editing) {
       element = (
-        <TodoTextInput text={todo.text}
+        <TodoTextInput
+          text={todo.text}
           editing={this.state.editing}
-          onSave={(text) => this.handleSave(todo.id, text)} />
+          onSave={this.handleInput(todo.id)}
+        />
       );
     } else {
       element = (
         <div className={'view'}>
-          <input className={'toggle'}
+          <input
+            className={'toggle'}
             type="checkbox"
             checked={todo.completed}
-            onChange={() => completeTodo(todo.id)} />
+            onChange={handleCompleteTodo(todo.id)}
+          />
 
           <label onDoubleClick={this.handleDoubleClick}>
             {todo.text}
           </label>
 
-          <button className={'destroy'} onClick={() => deleteTodo(todo.id)} />
+          <button className={'destroy'} onClick={handleDeleteTodo(todo.id)} />
         </div>
       );
     }

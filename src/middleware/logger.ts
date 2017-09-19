@@ -1,5 +1,5 @@
 export default function loggerMiddleware(store) {
-  return next => action => {
+  return next => (action) => {
     console.log(action);
     return next(action);
   };
